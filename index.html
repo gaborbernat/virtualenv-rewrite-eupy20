@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+
+    <title>reveal.js</title>
+
+    <link href="dist/reset.css" rel="stylesheet">
+    <link href="dist/reveal.css" rel="stylesheet">
+    <link href="dist/theme/solarized.css" id="theme" rel="stylesheet">
+
+    <link href="plugin/highlight/monokai.css" id="highlight-theme" rel="stylesheet">
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <section>
+            <img style="max-width: 25%" alt="python logo" src="img/python-logo-generic.svg"/>
+            <h2>rewriting and
+                <div style="white-space: nowrap">re-releasing</div>
+                <a href="http://virtualenv.pypa.io/">virtualenv</a>
+            </h2>
+            <h4>Lessons from the Trenches</h4>
+
+            <small>by
+                <a href="https://github.com/gaborbernat">Bernát Gábor</a> /
+                <a href="https://twitter.com/gjbernat">@gjbernat</a> /
+                <a href="https://www.techatbloomberg.com/">Bloomberg</a>
+            </small>
+            <br/>
+
+
+        </section>
+
+    </div>
+</div>
+
+<div style="position:absolute; bottom: 5px; right: 5px; width: 14em">
+    <p style="color: #767676; font-family: Helvetica, sans-serif; font-weight: bold; font-size: 2.5em; margin: 5px 0; text-align: center">
+        Bloomberg</p>
+    <p style="text-align: center; font-weight: bold; font-size: 0.6em; margin: 0 auto">
+        &copy; 2020 Bloomberg Finance L.P. - All rights reserved.</p>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script src="plugin/menu/menu.js"></script>
+<script src="plugin/zoom/zoom.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        dependencies: [{src: 'plugin/menu/menu.js'}],
+        history: true,
+        previewLinks: true,
+        navigationMode: 'linear',
+        transition: 'none',
+        viewDistance: 10,
+        mobileViewDistance: 6,
+        controls: false,
+        controlsTutorial: false,
+        progress: false,
+        plugins: [
+            RevealHighlight,
+            RevealNotes,
+            RevealZoom
+        ]
+    });
+</script>
+</body>
+</html>
