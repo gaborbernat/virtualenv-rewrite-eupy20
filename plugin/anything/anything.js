@@ -47,7 +47,6 @@ var RevealAnything = window.RevealAnything || (function () {
     var config = Reveal.getConfig().anything;
 
     Reveal.addEventListener('ready', function (event) {
-        console.log(config);
         for (var i = 0; i < config.length; i++) {
             // Get all elements of the class
             var elements = document.getElementsByClassName(config[i].className);
