@@ -1026,29 +1026,6 @@
         </section>
 
         <section>
-            <h2>Interpreter discovery - trust issues</h2>
-            <ul>
-                <li>when host Python is upgraded, host and virtual environment versions will differ
-                    <pre>
-                    <code data-trim>
-                        python3.8 --version
-                        Python 3.8.4
-                    </code>
-                </pre>
-                    <pre>
-                    <code data-trim>
-                        env/bin/python --version
-                        Python 3.8.3
-                    </code>
-                </pre>
-                </li>
-                <li class="fragment">given the virtual environment - which version to create?
-                    (<code>3.8.3</code> or <code>3.8.4</code>)
-                </li>
-            </ul>
-        </section>
-
-        <section>
             <h2>Be friendly and plan for redistribution</h2>
             <ul>
                 Fedora, Debian, etc. often apply patches on top of our source
@@ -1415,6 +1392,7 @@
             <ul>
                 <li class="fragment">Have a well defined delivery plan</li>
                 <li class="fragment">Test a lot, automate via CIs</li>
+                <li class="fragment">Prepare for a lot of bug fixes (on short turnaround - 27 releases in 5 months)</li>
                 <li class="fragment">Always be available post release</li>
                 <li class="fragment">Be ready to periodically re-evaluate things from the ground up</li>
                 <li class="fragment">In general (but especially in opensource), be nice</li>
