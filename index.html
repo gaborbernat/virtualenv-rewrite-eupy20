@@ -1,88 +1,109 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      name="viewport"
+    />
 
     <title>🐍 virtualenv rewrite 🐍</title>
 
-    <link href="dist/reset.css" rel="stylesheet">
-    <link href="dist/reveal.css" rel="stylesheet">
-    <link href="dist/theme/solarized.css" id="theme" rel="stylesheet">
+    <link href="dist/reset.css" rel="stylesheet" />
+    <link href="dist/reveal.css" rel="stylesheet" />
+    <link href="dist/theme/solarized.css" id="theme" rel="stylesheet" />
 
-    <link href="plugin/highlight/monokai.css" id="highlight-theme" rel="stylesheet">
-</head>
-<style>
+    <link
+      href="plugin/highlight/monokai.css"
+      id="highlight-theme"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
     .reveal pre {
-        margin-top: 0;
-        margin-bottom: 0;
-        box-shadow: none;
+      margin-top: 0;
+      margin-bottom: 0;
+      box-shadow: none;
     }
 
-    .reveal code, pre > code {
-        font-family: 'Inconsolata Patched', monospace;
-        text-rendering: geometricPrecision;
-        font-variant-ligatures: none;
-        line-height: 1;
+    .reveal code,
+    pre > code {
+      font-family: "Inconsolata Patched", monospace;
+      text-rendering: geometricPrecision;
+      font-variant-ligatures: none;
+      line-height: 1;
     }
 
     @font-face {
-        font-family: 'Inconsolata Patched';
-        src: local('Inconsolata Patched'), url('dist/theme/fonts/Inconsolata Regular Nerd Font Complete Mono.otf') format('opentype');
+      font-family: "Inconsolata Patched";
+      src: local("Inconsolata Patched"),
+        url("dist/theme/fonts/Inconsolata Regular Nerd Font Complete Mono.otf")
+          format("opentype");
     }
-</style>
-<body>
-<div class="reveal">
-    <div class="slides">
-
+  </style>
+  <body>
+    <div class="reveal">
+      <div class="slides">
         <section>
-            <h1>rewriting and re-releasing
-                <a href="http://virtualenv.pypa.io/">virtualenv</a>
-            </h1>
-            <h2>😊 Lessons from the Trenches 😊</h2>
+          <h1>
+            rewriting and re-releasing
+            <a href="http://virtualenv.pypa.io/">virtualenv</a>
+          </h1>
+          <h2>😊 Lessons from the Trenches 😊</h2>
 
-            <small>by
-                <a href="https://github.com/gaborbernat">Bernát Gábor</a> /
-                <a href="https://twitter.com/gjbernat">@gjbernat</a> /
-                <a href="https://www.techatbloomberg.com/">Bloomberg</a>
-            </small>
-            <br/>
+          <small
+            >by <a href="https://github.com/gaborbernat">Bernát Gábor</a> /
+            <a href="https://twitter.com/gjbernat">@gjbernat</a> /
+            <a href="https://www.techatbloomberg.com/">Bloomberg</a>
+          </small>
+          <p>
+            slides @
+            <a href="https://bit.ly/virtualenv-eupy20"
+              >https://bit.ly/virtualenv-eupy20</a
+            >
+          </p>
+          <br />
         </section>
 
         <section>
-            <h1 style="margin: 0">What is virtualenv?</h1>
-            <img alt="Silky" src="img/what_is.png" style="margin: 0; height: 540px"/>
+          <h1 style="margin: 0;">What is virtualenv?</h1>
+          <img
+            alt="Silky"
+            src="img/what_is.png"
+            style="margin: 0; height: 540px;"
+          />
         </section>
 
         <section>
-            <h2>What is virtualenv?</h2>
-            <ul>
-                <li>
-                    a tool to create Python <em>virtual environments</em>
-                </li>
+          <h2>What is virtualenv?</h2>
+          <ul>
+            <li>a tool to create Python <em>virtual environments</em></li>
+            <li class="fragment">
+              Python executables that behave as it would be a separate Python
+              installation (from the system one)
+              <ul>
                 <li class="fragment">
-                    Python executables that behave as it would be a separate Python installation (from the system one)
-                    <ul>
-                        <li class="fragment">packages installed do not affect the system Python</li>
-                    </ul>
+                  packages installed do not affect the system Python
                 </li>
-            </ul>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>what is virtualenv</h2>
+          <h2>what is virtualenv</h2>
 
-            <pre>
+          <pre>
                 <code data-trim>
                     $ virtualenv env --python python3.8
                 </code>
             </pre>
-            <pre class="fragment">
+          <pre class="fragment">
                 <code data-trim>
                     $ env/bin/python -m pip install httpie
                 </code>
             </pre>
-            <pre class="fragment">
+          <pre class="fragment">
                 <code data-trim>
                     $ env/bin/http https://httpie.org/hello
                     HTTP/1.1 200 OK
@@ -102,19 +123,20 @@
         </section>
 
         <section>
-            <h3>What is a virtual environment?</h3>
+          <h3>What is a virtual environment?</h3>
 
-            <ul>
-                <li>
-                    While isolating package installs from the system, it mirrors the system with regards to:
-                    <ul>
-                        <li>implementation, version, build, etc</li>
-                    </ul>
-                </li>
-            </ul>
+          <ul>
+            <li>
+              While isolating package installs from the system, it mirrors the
+              system with regards to:
+              <ul>
+                <li>implementation, version, build, etc</li>
+              </ul>
+            </li>
+          </ul>
 
-            <div class="fragment">
-               <pre>
+          <div class="fragment">
+            <pre>
                 <code data-trim style="font-size: 0.95em">
                  $ /usr/bin/python -c 'import sys; import os; print(sys.executable); print(sys.version); print(os.__file__)'
                  /System/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python
@@ -124,13 +146,13 @@
                 </code>
             </pre>
 
-                <pre class="fragment">
+            <pre class="fragment">
                 <code data-trim style="font-size: 0.95em">
                  $ virtualenv env --python /usr/bin/python
                 </code>
             </pre>
 
-                <pre class="fragment">
+            <pre class="fragment">
                 <code data-trim style="font-size: 0.95em">
                  $ env/python -c 'import sys; import os; print(sys.executable); print(sys.version); print(os.__file__)'
                  /tmp/env/bin/python
@@ -139,291 +161,361 @@
                  /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/os.pyc
                 </code>
             </pre>
-            </div>
-
+          </div>
         </section>
 
         <section>
-            <h2>How popular is virtualenv?</h2>
-            <div>
-                <ul>
-                    <li>
-                        statistics via <a href="https://pypi.org/project/pypinfo/">pypinfo</a> processes pypi.org logs
-                        stored in Google BigQuery
-                        <pre>
+          <h2>How popular is virtualenv?</h2>
+          <div>
+            <ul>
+              <li>
+                statistics via
+                <a href="https://pypi.org/project/pypinfo/">pypinfo</a>
+                processes pypi.org logs stored in Google BigQuery
+                <pre>
                 <code data-trim>
                  pypinfo --all -l 365 --json --start-date 2019-02-10 --end-date 2020-02-10 virtualenv date
                 </code>
             </pre>
-                    </li>
-                    <li class="fragment">first 1TB free (virtualenv 12 months ~0.8TB)</li>
-                </ul>
-
-            </div>
+              </li>
+              <li class="fragment">
+                first 1TB free (virtualenv 12 months ~0.8TB)
+              </li>
+            </ul>
+          </div>
         </section>
 
         <section>
-            <h2>How popular is virtualenv?</h2>
-            <div class="plot">
-                <!--
+          <h2>How popular is virtualenv?</h2>
+          <div class="plot">
+            <!--
                 {"chart": {"zoomType": "x"}, "title": {"text": "downloads per day"}, "xAxis": {"type": "datetime"}, "yAxis": {"title": {"text": "Download count"}}, "legend": {"enabled": false}, "series": [{"type": "area", "name": "# download", "data": [[1549756800000.0, 142605], [1549843200000.0, 266080], [1549929600000.0, 279604], [1550016000000.0, 289864], [1550102400000.0, 364334], [1550188800000.0, 333231], [1550275200000.0, 161940], [1550361600000.0, 147244], [1550448000000.0, 236493], [1550534400000.0, 294815], [1550620800000.0, 311450], [1550707200000.0, 302895], [1550793600000.0, 310018], [1550880000000.0, 162866], [1550966400000.0, 152817], [1551052800000.0, 274627], [1551139200000.0, 310122], [1551225600000.0, 285151], [1551312000000.0, 308147], [1551398400000.0, 278113], [1551484800000.0, 179382], [1551571200000.0, 157706], [1551657600000.0, 255548], [1551744000000.0, 288647], [1551830400000.0, 285550], [1551916800000.0, 314410], [1552003200000.0, 254926], [1552089600000.0, 158757], [1552176000000.0, 156874], [1552262400000.0, 266935], [1552348800000.0, 288245], [1552435200000.0, 286551], [1552521600000.0, 288863], [1552608000000.0, 257021], [1552694400000.0, 142148], [1552780800000.0, 143143], [1552867200000.0, 272426], [1552953600000.0, 274334], [1553040000000.0, 307988], [1553126400000.0, 396532], [1553212800000.0, 250957], [1553299200000.0, 141470], [1553385600000.0, 144048], [1553472000000.0, 268125], [1553558400000.0, 276265], [1553644800000.0, 289907], [1553731200000.0, 290880], [1553817600000.0, 269924], [1553904000000.0, 172490], [1553990400000.0, 151242], [1554073200000.0, 260865], [1554159600000.0, 282845], [1554246000000.0, 328570], [1554332400000.0, 280746], [1554418800000.0, 279706], [1554505200000.0, 193575], [1554591600000.0, 181541], [1554678000000.0, 308396], [1554764400000.0, 310766], [1554850800000.0, 297821], [1554937200000.0, 272547], [1555023600000.0, 290150], [1555110000000.0, 72750], [1555196400000.0, 221890], [1555282800000.0, 296831], [1555369200000.0, 299378], [1555455600000.0, 326112], [1555542000000.0, 319810], [1555628400000.0, 248350], [1555714800000.0, 153976], [1555801200000.0, 146878], [1555887600000.0, 245027], [1555974000000.0, 324163], [1556060400000.0, 240635], [1556146800000.0, 24855], [1556406000000.0, 41154], [1556492400000.0, 327841], [1556578800000.0, 342777], [1556665200000.0, 287451], [1556751600000.0, 332928], [1556838000000.0, 291489], [1556924400000.0, 194185], [1557010800000.0, 195669], [1557097200000.0, 304545], [1557183600000.0, 331243], [1557270000000.0, 325038], [1557356400000.0, 316246], [1557442800000.0, 313124], [1557529200000.0, 165150], [1557615600000.0, 171428], [1557702000000.0, 324239], [1557788400000.0, 372535], [1557874800000.0, 394248], [1557961200000.0, 353711], [1558047600000.0, 299968], [1558134000000.0, 192455], [1558220400000.0, 184656], [1558306800000.0, 296464], [1558393200000.0, 307969], [1558479600000.0, 306724], [1558566000000.0, 304392], [1558652400000.0, 283464], [1558738800000.0, 179117], [1558825200000.0, 189528], [1558911600000.0, 371997], [1558998000000.0, 472524], [1559084400000.0, 434786], [1559170800000.0, 417116], [1559257200000.0, 438374], [1559343600000.0, 177607], [1559430000000.0, 282041], [1559516400000.0, 541095], [1559602800000.0, 500661], [1559689200000.0, 345828], [1559775600000.0, 356895], [1559862000000.0, 380912], [1559948400000.0, 303051], [1560034800000.0, 281296], [1560121200000.0, 406641], [1560207600000.0, 342916], [1560294000000.0, 342018], [1560380400000.0, 323126], [1560466800000.0, 293902], [1560553200000.0, 172502], [1560639600000.0, 197913], [1560726000000.0, 315712], [1560812400000.0, 324008], [1560898800000.0, 341165], [1560985200000.0, 353489], [1561071600000.0, 325495], [1561158000000.0, 185937], [1561244400000.0, 176635], [1561330800000.0, 292709], [1561417200000.0, 314726], [1561503600000.0, 314090], [1561590000000.0, 314580], [1561676400000.0, 325656], [1561762800000.0, 163605], [1561849200000.0, 162126], [1561935600000.0, 312217], [1562022000000.0, 323833], [1562108400000.0, 373640], [1562194800000.0, 449358], [1562281200000.0, 608549], [1562367600000.0, 183066], [1562454000000.0, 197124], [1562540400000.0, 307752], [1562626800000.0, 337845], [1562713200000.0, 341334], [1562799600000.0, 343044], [1562886000000.0, 298985], [1562972400000.0, 186823], [1563058800000.0, 199609], [1563145200000.0, 331462], [1563231600000.0, 358449], [1563318000000.0, 355287], [1563404400000.0, 342413], [1563490800000.0, 309313], [1563577200000.0, 175686], [1563663600000.0, 183519], [1563750000000.0, 332616], [1563836400000.0, 384356], [1563922800000.0, 365708], [1564009200000.0, 379816], [1564095600000.0, 352048], [1564182000000.0, 200596], [1564268400000.0, 190427], [1564354800000.0, 348793], [1564441200000.0, 365872], [1564527600000.0, 367221], [1564614000000.0, 354262], [1564700400000.0, 340077], [1564786800000.0, 210219], [1564873200000.0, 221332], [1564959600000.0, 378577], [1565046000000.0, 370223], [1565132400000.0, 416199], [1565218800000.0, 461913], [1565305200000.0, 433359], [1565391600000.0, 289355], [1565478000000.0, 190126], [1565564400000.0, 326829], [1565650800000.0, 376760], [1565737200000.0, 375822], [1565823600000.0, 353454], [1565910000000.0, 369113], [1565996400000.0, 214748], [1566082800000.0, 211940], [1566169200000.0, 348715], [1566255600000.0, 373147], [1566342000000.0, 373871], [1566428400000.0, 363697], [1566514800000.0, 407332], [1566601200000.0, 198551], [1566687600000.0, 194342], [1566774000000.0, 341014], [1566860400000.0, 368269], [1566946800000.0, 366639], [1567033200000.0, 540199], [1567119600000.0, 312519], [1567206000000.0, 195086], [1567292400000.0, 196450], [1567378800000.0, 283311], [1567465200000.0, 387387], [1567551600000.0, 391339], [1567638000000.0, 380396], [1567724400000.0, 344549], [1567810800000.0, 200090], [1567897200000.0, 187200], [1567983600000.0, 369081], [1568070000000.0, 367228], [1568156400000.0, 374545], [1568242800000.0, 370655], [1568329200000.0, 325006], [1568415600000.0, 194854], [1568502000000.0, 197430], [1568588400000.0, 340283], [1568674800000.0, 365281], [1568761200000.0, 358887], [1568847600000.0, 368418], [1568934000000.0, 353089], [1569020400000.0, 214406], [1569106800000.0, 197094], [1569193200000.0, 348588], [1569279600000.0, 353303], [1569366000000.0, 358597], [1569452400000.0, 372658], [1569538800000.0, 353388], [1569625200000.0, 226893], [1569711600000.0, 204394], [1569798000000.0, 355511], [1569884400000.0, 378239], [1569970800000.0, 347031], [1570057200000.0, 336840], [1570143600000.0, 332784], [1570230000000.0, 222825], [1570316400000.0, 196091], [1570402800000.0, 341378], [1570489200000.0, 359319], [1570575600000.0, 359278], [1570662000000.0, 364558], [1570748400000.0, 338577], [1570834800000.0, 208111], [1570921200000.0, 170274], [1571007600000.0, 324088], [1571094000000.0, 361752], [1571180400000.0, 406954], [1571266800000.0, 397219], [1571353200000.0, 370472], [1571439600000.0, 224326], [1571526000000.0, 201855], [1571612400000.0, 357346], [1571698800000.0, 411446], [1571785200000.0, 379289], [1571871600000.0, 382232], [1571958000000.0, 360605], [1572044400000.0, 222266], [1572130800000.0, 182922], [1572220800000.0, 340509], [1572307200000.0, 354960], [1572393600000.0, 364761], [1572480000000.0, 377440], [1572566400000.0, 342900], [1572652800000.0, 218419], [1572739200000.0, 199662], [1572825600000.0, 361093], [1572912000000.0, 379124], [1572998400000.0, 371095], [1573084800000.0, 363844], [1573171200000.0, 371184], [1573257600000.0, 237946], [1573344000000.0, 189547], [1573430400000.0, 345914], [1573516800000.0, 384207], [1573603200000.0, 386314], [1573689600000.0, 368142], [1573776000000.0, 373235], [1573862400000.0, 233952], [1573948800000.0, 184229], [1574035200000.0, 361483], [1574121600000.0, 398668], [1574208000000.0, 387242], [1574294400000.0, 411406], [1574380800000.0, 396154], [1574467200000.0, 251034], [1574553600000.0, 206412], [1574640000000.0, 395846], [1574726400000.0, 404310], [1574812800000.0, 369079], [1574899200000.0, 301625], [1574985600000.0, 271382], [1575072000000.0, 209277], [1575158400000.0, 191604], [1575244800000.0, 357229], [1575331200000.0, 424566], [1575417600000.0, 421999], [1575504000000.0, 403798], [1575590400000.0, 392347], [1575676800000.0, 212904], [1575763200000.0, 207121], [1575849600000.0, 375404], [1575936000000.0, 406614], [1576022400000.0, 401282], [1576108800000.0, 386751], [1576195200000.0, 358313], [1576281600000.0, 232190], [1576368000000.0, 226289], [1576454400000.0, 398036], [1576540800000.0, 421756], [1576627200000.0, 409138], [1576713600000.0, 425936], [1576800000000.0, 364599], [1576886400000.0, 227160], [1576972800000.0, 200621], [1577059200000.0, 298181], [1577145600000.0, 255683], [1577232000000.0, 199532], [1577318400000.0, 232047], [1577404800000.0, 259479], [1577491200000.0, 194272], [1577577600000.0, 205538], [1577664000000.0, 270088], [1577750400000.0, 247445], [1577836800000.0, 202417], [1577923200000.0, 353965], [1578009600000.0, 354709], [1578096000000.0, 224561], [1578182400000.0, 216464], [1578268800000.0, 351835], [1578355200000.0, 390239], [1578441600000.0, 381162], [1578528000000.0, 397024], [1578614400000.0, 382861], [1578700800000.0, 220295], [1578787200000.0, 210964], [1578873600000.0, 380486], [1578960000000.0, 389015], [1579046400000.0, 364794], [1579132800000.0, 369350], [1579219200000.0, 370206], [1579305600000.0, 216775], [1579392000000.0, 203833], [1579478400000.0, 320934], [1579564800000.0, 365510], [1579651200000.0, 361274], [1579737600000.0, 384186], [1579824000000.0, 380128], [1579910400000.0, 204611], [1579996800000.0, 198349], [1580083200000.0, 350674], [1580169600000.0, 381877], [1580256000000.0, 383165], [1580342400000.0, 390881], [1580428800000.0, 373702], [1580515200000.0, 229658], [1580601600000.0, 219471], [1580688000000.0, 365547], [1580774400000.0, 408146], [1580860800000.0, 403189], [1580947200000.0, 395365], [1581033600000.0, 388201], [1581120000000.0, 248002], [1581206400000.0, 228483], [1581292800000.0, 611182]]}]}
                 -->
-            </div>
+          </div>
         </section>
 
         <section>
-            <h2>How popular is virtualenv?</h2>
-            <div class="plot">
-                <!--
+          <h2>How popular is virtualenv?</h2>
+          <div class="plot">
+            <!--
                 {"chart": {"zoomType": "x"}, "title": {"text": "downloads per week"}, "xAxis": {"type": "datetime"}, "yAxis": {"title": {"text": "Download count"}}, "legend": {"enabled": false}, "series": [{"type": "area", "name": "# download", "data": [[1549238400000.0, 142605], [1549843200000.0, 1842297], [1550448000000.0, 1771354], [1551052800000.0, 1793248], [1551657600000.0, 1714712], [1552262400000.0, 1672906], [1552867200000.0, 1787755], [1553472000000.0, 1718833], [1554073200000.0, 1807848], [1554678000000.0, 1774320], [1555282800000.0, 1791335], [1555887600000.0, 875834], [1556492400000.0, 1972340], [1557097200000.0, 1926774], [1557702000000.0, 2121812], [1558306800000.0, 1867658], [1558911600000.0, 2594445], [1559516400000.0, 2709738], [1560121200000.0, 2079018], [1560726000000.0, 2022441], [1561330800000.0, 1887492], [1561935600000.0, 2447787], [1562540400000.0, 2015392], [1563145200000.0, 2056129], [1563750000000.0, 2205567], [1564354800000.0, 2207776], [1564959600000.0, 2539752], [1565564400000.0, 2228666], [1566169200000.0, 2259655], [1566774000000.0, 2320176], [1567378800000.0, 2174272], [1567983600000.0, 2198799], [1568588400000.0, 2197458], [1569193200000.0, 2217821], [1569798000000.0, 2169321], [1570402800000.0, 2141495], [1571007600000.0, 2286666], [1571612400000.0, 2296106], [1572220800000.0, 2198651], [1572825600000.0, 2273833], [1573430400000.0, 2275993], [1574035200000.0, 2412399], [1574640000000.0, 2143123], [1575244800000.0, 2419964], [1575849600000.0, 2386843], [1576454400000.0, 2447246], [1577059200000.0, 1644732], [1577664000000.0, 1869649], [1578268800000.0, 2334380], [1578873600000.0, 2294459], [1579478400000.0, 2214992], [1580083200000.0, 2329428], [1580688000000.0, 2436933], [1581292800000.0, 611182]]}]}
                 -->
-            </div>
+          </div>
         </section>
 
         <section>
-            <h2>How popular is virtualenv?</h2>
-            <div class="plot">
-                <!--
+          <h2>How popular is virtualenv?</h2>
+          <div class="plot">
+            <!--
                 {"chart": {"zoomType": "x"}, "title": {"text": "downloads per month"}, "xAxis": {"type": "datetime"}, "yAxis": {"title": {"text": "Download count"}}, "legend": {"enabled": false}, "series": [{"type": "area", "name": "# download", "data": [[1548979200000.0, 4934303], [1551398400000.0, 7509407], [1554073200000.0, 6919955], [1556665200000.0, 9352763], [1559343600000.0, 9158337], [1561935600000.0, 9806761], [1564614000000.0, 10277689], [1567292400000.0, 9340311], [1569884400000.0, 9975747], [1572566400000.0, 9674725], [1575158400000.0, 9607922], [1577836800000.0, 10076246], [1580515200000.0, 3497244]]}]}
                 -->
-            </div>
+          </div>
         </section>
 
         <section>
-            <h2><a href="https://hugovk.github.io/top-pypi-packages/">Top packages chart via hugovk.github.io</a></h2>
-            <img alt="virtualenv 66th package" class="r-stretch" src="img/top_chart.png" style="margin: 0">
-        </section>
-
-
-        <section>
-            <section>
-                <h2>virtual environments in depth</h2>
-                <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
-                        frameborder="0"
-                        height="550" src="https://www.youtube-nocookie.com/embed/o1Vue9CWRxU"
-                        width="977"></iframe>
-            </section>
+          <h2>
+            <a href="https://hugovk.github.io/top-pypi-packages/"
+              >Top packages chart via hugovk.github.io</a
+            >
+          </h2>
+          <img
+            alt="virtualenv 66th package"
+            class="r-stretch"
+            src="img/top_chart.png"
+            style="margin: 0;"
+          />
         </section>
 
         <section>
-            <h2>virtual environment creation tools</h2>
-            <ol style="width: 600px">
-                <li>virtualenv
-                    <pre>
+          <section>
+            <h2>virtual environments in depth</h2>
+            <iframe
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              frameborder="0"
+              height="550"
+              src="https://www.youtube-nocookie.com/embed/o1Vue9CWRxU"
+              width="977"
+            ></iframe>
+          </section>
+        </section>
+
+        <section>
+          <h2>virtual environment creation tools</h2>
+          <ol style="width: 600px;">
+            <li>
+              virtualenv
+              <pre>
                     <code data-trim>
                         $ virtualenv env --python python3.8
                     </code>
                     </pre>
-
-                </li>
-                <li class="fragment">venv as per <a href="https://www.python.org/dev/peps/pep-0405/">PEP-405</a>
-                    <pre>
+            </li>
+            <li class="fragment">
+              venv as per
+              <a href="https://www.python.org/dev/peps/pep-0405/">PEP-405</a>
+              <pre>
                     <code data-trim>
                         $ python3.8 -m venv env
                     </code>
                     </pre>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>Differences between the two tools</h2>
+          <style type="text/css">
+            .tg {
+              border-collapse: collapse;
+              border-spacing: 0;
+            }
+
+            .tg td {
+              border-color: black;
+              border-style: solid;
+              border-width: 1px;
+              font-family: Arial, sans-serif;
+              font-size: 0.65em;
+              overflow: hidden;
+              padding: 10px 5px;
+              word-break: normal;
+            }
+
+            .tg th {
+              border-color: black;
+              border-style: solid;
+              border-width: 1px;
+              font-family: Arial, sans-serif;
+              font-size: 1em;
+              font-weight: normal;
+              overflow: hidden;
+              padding: 10px 5px;
+              word-break: normal;
+            }
+
+            .tg .tg-1wig {
+              font-weight: bold;
+              text-align: left;
+              vertical-align: top;
+            }
+
+            .tg .tg-ihln {
+              font-style: italic;
+              font-weight: bold;
+              text-align: center;
+              vertical-align: top;
+            }
+
+            .tg .tg-0pky {
+              border-color: inherit;
+              text-align: left;
+              vertical-align: top;
+            }
+
+            .tg .tg-rvyq {
+              border-color: inherit;
+              font-style: italic;
+              font-weight: bold;
+              text-align: center;
+              vertical-align: top;
+            }
+
+            .tg .tg-0lax {
+              text-align: left;
+              vertical-align: top;
+            }
+          </style>
+          <table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-0pky"></th>
+                <th class="tg-rvyq">virtualenv</th>
+                <th class="tg-ihln">venv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="fragment">
+                <td class="tg-0pky">
+                  <span style="font-weight: bold;">Installation</span>
+                </td>
+                <td class="tg-0pky">yes, third-party package</td>
+                <td class="tg-0lax">no, standard library</td>
+              </tr>
+              <tr class="fragment">
+                <td class="tg-0lax">
+                  <span style="font-weight: bold;">Update</span>
+                </td>
+                <td class="tg-0lax">anytime via pip</td>
+                <td class="tg-0lax">with the interpreter</td>
+              </tr>
+              <tr class="fragment">
+                <td class="tg-0pky">
+                  <span style="font-weight: bold;">Python version</span>
+                </td>
+                <td class="tg-0pky">
+                  <span style="font-weight: 400; font-style: normal;"
+                    >2.7 and 3.4 or later</span
+                  >
+                </td>
+                <td class="tg-0lax">3.3 or later</td>
+              </tr>
+              <tr class="fragment">
+                <td class="tg-0pky">
+                  <span style="font-weight: bold;">Python flavour</span>
+                </td>
+                <td class="tg-0pky">PyPy, CPython</td>
+                <td class="tg-0lax">self-support for 3.3+</td>
+              </tr>
+              <tr class="fragment">
+                <td class="tg-1wig">Configurability</td>
+                <td class="tg-0lax">
+                  CLI + environment variables + per user config file
+                </td>
+                <td class="tg-0lax">CLI</td>
+              </tr>
+              <tr class="fragment">
+                <td class="tg-1wig">Extensibility</td>
+                <td class="tg-0lax">
+                  via plugins that can be installed alongside
+                </td>
+                <td class="tg-0lax">by extending the base class</td>
+              </tr>
+              <tr class="fragment">
+                <td class="tg-1wig">Performance</td>
+                <td class="tg-0lax">
+                  by using the cached seed mechanism &lt;500ms
+                </td>
+                <td class="tg-0lax">2 seconds+ per invocation</td>
+              </tr>
+              <tr class="fragment">
+                <td class="tg-1wig">API</td>
+                <td class="tg-0lax">
+                  rich: e.g., lookup executable, site package dir
+                </td>
+                <td class="tg-0lax">
+                  <a href="https://www.python.org/dev/peps/pep-0405/"
+                    >limited as per PEP-405</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>In a world with venv is virtualenv needed?</h2>
+          <ul>
+            <li class="fragment">
+              yes, virtualenv is a place to innovate and improve virtual
+              environments
+            </li>
+            <li class="fragment">
+              as of today virtualenv (compared to venv) has better
+              <ul>
+                <li>creation time (performance)</li>
+                <li>API</li>
+                <li>extensibility</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>The motivation (why)</h1>
+          <img
+            alt="Silky"
+            src="img/the_motivation.jpg"
+            style="margin: 0; width: 820px;"
+          />
+        </section>
+
+        <section>
+          <h2>Old pains</h2>
+          <ul>
+            <li class="fragment">single file - of spurious if/else branches</li>
+            <li class="fragment">test suite ~ 60% line coverage</li>
+            <li class="fragment">
+              rudimentary plugin system makes it hard to extend
+            </li>
+            <li class="fragment">
+              things that made sense 12 years ago are no longer true
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Earlier rewrite efforts</h2>
+          <ul>
+            At least 2 attempts, both abandoned halfway through because:
+            <li class="fragment">
+              deceptively simple<span class="fragment"
+                >, but lots of nuances and edge cases</span
+              >
+            </li>
+            <li class="fragment">
+              hard to test - a myriad of Python distributions/version/platforms
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>How I jumped in</h2>
+          <ul>
+            <li class="fragment">
+              tox maintainer since June 2017 (virtualenv dependency)
+            </li>
+            <li class="fragment">virtualenv maintainer since October 2018</li>
+            <li class="fragment">
+              tox is slow, April 2019 started tox rewrite to improve on it,
+              discoveries:
+              <ul>
+                <li class="fragment">
+                  virtual environment creation is slow in virtualenv
                 </li>
-            </ol>
-        </section>
-        <section>
-            <h2>Differences between the two tools</h2>
-            <style type="text/css">
-                .tg {
-                    border-collapse: collapse;
-                    border-spacing: 0;
-                }
-
-                .tg td {
-                    border-color: black;
-                    border-style: solid;
-                    border-width: 1px;
-                    font-family: Arial, sans-serif;
-                    font-size: 0.65em;
-                    overflow: hidden;
-                    padding: 10px 5px;
-                    word-break: normal;
-                }
-
-                .tg th {
-                    border-color: black;
-                    border-style: solid;
-                    border-width: 1px;
-                    font-family: Arial, sans-serif;
-                    font-size: 1em;
-                    font-weight: normal;
-                    overflow: hidden;
-                    padding: 10px 5px;
-                    word-break: normal;
-                }
-
-                .tg .tg-1wig {
-                    font-weight: bold;
-                    text-align: left;
-                    vertical-align: top
-                }
-
-                .tg .tg-ihln {
-                    font-style: italic;
-                    font-weight: bold;
-                    text-align: center;
-                    vertical-align: top
-                }
-
-                .tg .tg-0pky {
-                    border-color: inherit;
-                    text-align: left;
-                    vertical-align: top
-                }
-
-                .tg .tg-rvyq {
-                    border-color: inherit;
-                    font-style: italic;
-                    font-weight: bold;
-                    text-align: center;
-                    vertical-align: top
-                }
-
-                .tg .tg-0lax {
-                    text-align: left;
-                    vertical-align: top
-                }
-            </style>
-            <table class="tg">
-                <thead>
-                <tr>
-                    <th class="tg-0pky"></th>
-                    <th class="tg-rvyq">virtualenv</th>
-                    <th class="tg-ihln">venv</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="fragment">
-                    <td class="tg-0pky"><span style="font-weight:bold">Installation</span></td>
-                    <td class="tg-0pky">yes, third-party package</td>
-                    <td class="tg-0lax">no, standard library</td>
-                </tr>
-                <tr class="fragment">
-                    <td class="tg-0lax"><span style="font-weight:bold">Update</span></td>
-                    <td class="tg-0lax">anytime via pip</td>
-                    <td class="tg-0lax">with the interpreter</td>
-                </tr>
-                <tr class="fragment">
-                    <td class="tg-0pky"><span style="font-weight:bold">Python version</span></td>
-                    <td class="tg-0pky"><span style="font-weight:400;font-style:normal">2.7 and 3.4 or later</span></td>
-                    <td class="tg-0lax">3.3 or later</td>
-                </tr>
-                <tr class="fragment">
-                    <td class="tg-0pky"><span style="font-weight:bold">Python flavour</span></td>
-                    <td class="tg-0pky">PyPy, CPython</td>
-                    <td class="tg-0lax">self-support for 3.3+</td>
-                </tr>
-                <tr class="fragment">
-                    <td class="tg-1wig">Configurability</td>
-                    <td class="tg-0lax">CLI + environment variables + per user config file</td>
-                    <td class="tg-0lax">CLI</td>
-                </tr>
-                <tr class="fragment">
-                    <td class="tg-1wig">Extensibility</td>
-                    <td class="tg-0lax">via plugins that can be installed alongside</td>
-                    <td class="tg-0lax">by extending the base class</td>
-                </tr>
-                <tr class="fragment">
-                    <td class="tg-1wig">Performance</td>
-                    <td class="tg-0lax">by using the cached seed mechanism &lt;500ms</td>
-                    <td class="tg-0lax">2 seconds+ per invocation</td>
-                </tr>
-                <tr class="fragment">
-                    <td class="tg-1wig">API</td>
-                    <td class="tg-0lax">rich: e.g., lookup executable, site package dir</td>
-                    <td class="tg-0lax"><a href="https://www.python.org/dev/peps/pep-0405/">limited as per PEP-405</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-        </section>
-
-        <section>
-            <h2>In a world with venv is virtualenv needed?</h2>
-            <ul>
-                <li class="fragment"> yes, virtualenv is a place to innovate and improve virtual environments</li>
-                <li class="fragment"> as of today virtualenv (compared to venv) has better
-                    <ul>
-                        <li>creation time (performance)</li>
-                        <li>API</li>
-                        <li>extensibility</li>
-                    </ul>
+                <li class="fragment">
+                  virtualenv API lacks ability to provide path to site packages
                 </li>
-            </ul>
-        </section>
-
-        <section>
-            <h1>The motivation (why)</h1>
-            <img alt="Silky" src="img/the_motivation.jpg" style="margin: 0; width: 820px;"/>
-        </section>
-
-
-        <section>
-            <h2>Old pains</h2>
-            <ul>
-                <li class="fragment">single file - of spurious if/else branches</li>
-                <li class="fragment">test suite ~ 60% line coverage</li>
-                <li class="fragment">rudimentary plugin system makes it hard to extend</li>
-                <li class="fragment">things that made sense 12 years ago are no longer true</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Earlier rewrite efforts</h2>
-            <ul>
-                At least 2 attempts, both abandoned halfway through because:
-                <li class="fragment">deceptively simple<span
-                        class="fragment">, but lots of nuances and edge cases</span></li>
-                <li class="fragment">hard to test - a myriad of Python distributions/version/platforms</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>How I jumped in</h2>
-            <ul>
-                <li class="fragment">tox maintainer since June 2017 (virtualenv dependency)</li>
-                <li class="fragment">virtualenv maintainer since October 2018</li>
-                <li class="fragment">tox is slow, April 2019 started tox rewrite to improve on it, discoveries:
-                    <ul>
-                        <li class="fragment">virtual environment creation is slow in virtualenv</li>
-                        <li class="fragment">virtualenv API lacks ability to provide path to site packages</li>
-                        <li class="fragment">interpreter discovery happens both in tox and virtualenv</li>
-                    </ul>
+                <li class="fragment">
+                  interpreter discovery happens both in tox and virtualenv
                 </li>
-                <li class="fragment">🥺 pause on tox rewrite, start virtualenv rewrite 😱</li>
-            </ul>
+              </ul>
+            </li>
+            <li class="fragment">
+              🥺 pause on tox rewrite, start virtualenv rewrite 😱
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h1>The Plan</h1>
-            <img alt="Silky" class="r-stretch" src="img/the_plan.png" style="margin: 0"/>
+          <h1>The Plan</h1>
+          <img
+            alt="Silky"
+            class="r-stretch"
+            src="img/the_plan.png"
+            style="margin: 0;"
+          />
         </section>
 
         <section>
-            <h2>The plan - identify components</h2>
-            <ul>
-                <li>creators</li>
-                <li>seeders</li>
-                <li>activators</li>
-                <li>interpreter discovery</li>
-            </ul>
+          <h2>The plan - identify components</h2>
+          <ul>
+            <li>creators</li>
+            <li>seeders</li>
+            <li>activators</li>
+            <li>interpreter discovery</li>
+          </ul>
         </section>
 
         <section>
-            <h2>Creator</h2>
-            <pre>
+          <h2>Creator</h2>
+          <pre>
                 <code class="bash" data-trim>
             $ virtualenv env --without-pip --activators ""
             created virtual environment CPython3.8.3.final.0-64 in 46ms
               creator CPython3Posix(dest=/tmp/env, clear=True, global=False)
                 </code>
             </pre>
-            <pre>
+          <pre>
                 <code class="bash" data-trim>
                  env
                 ├──  bin
@@ -441,8 +533,8 @@
         </section>
 
         <section>
-            <h2>Seed mechanism</h2>
-            <pre>
+          <h2>Seed mechanism</h2>
+          <pre>
                 <code class="bash" data-line-numbers="4-5" data-trim style="font-size: 0.84em">
             $ virtualenv env --activators ""
             created virtual environment CPython3.8.3.final.0-64 in 493ms
@@ -451,7 +543,7 @@
                 added seed packages: pip==20.1.1, setuptools==47.3.1, wheel==0.34.2
                 </code>
             </pre>
-            <pre>
+          <pre>
                 <code class="bash" data-line-numbers="4, 7, 11, 14" data-trim>
                  env
                 └──  lib
@@ -473,8 +565,8 @@
         </section>
 
         <section>
-            <h2>Activators</h2>
-            <pre>
+          <h2>Activators</h2>
+          <pre>
                 <code class="bash" data-line-numbers="4" data-trim style="font-size: 0.95em">
             $ virtualenv env --without-pip
             created virtual environment CPython3.8.3.final.0-64 in 124ms
@@ -482,7 +574,7 @@
              activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator
                 </code>
             </pre>
-            <pre>
+          <pre>
                 <code class="bash" data-line-numbers="3-8" data-trim>
                  env
                 └──  bin
@@ -500,8 +592,8 @@
         </section>
 
         <section>
-            <h2>Interpreter discovery</h2>
-            <pre>
+          <h2>Interpreter discovery</h2>
+          <pre>
                 <code class="bash" data-trim>
             $ virtualenv env --python 2
 
@@ -509,7 +601,7 @@
               creator CPython2Posix(dest=/tmp/venv, clear=True, global=False)
                 </code>
             </pre>
-            <pre class="fragment">
+          <pre class="fragment">
                 <code class="bash" data-trim>
             $ virtualenv env --python PyPy3.6.9-64
 
@@ -520,79 +612,116 @@
         </section>
 
         <section>
-            <h2>What do we continue to support?</h2>
-            <ul>
-                <li>cross version -> if installed on 3.6, can create in 3.8 (if available on host)</li>
-                <li class="fragment">Python 2 - CPython for 2 years, PyPy until upstream PyPy does</li>
-                <li class="fragment">no install use (download and run mode)</li>
-            </ul>
+          <h2>What do we continue to support?</h2>
+          <ul>
+            <li>
+              cross version -> if installed on 3.6, can create in 3.8 (if
+              available on host)
+            </li>
+            <li class="fragment">
+              Python 2 - CPython for 2 years, PyPy until upstream PyPy does
+            </li>
+            <li class="fragment">no install use (download and run mode)</li>
+          </ul>
         </section>
         <section>
-            <h2>What do we need to add?</h2>
-            <ul>
-                <li>extensible - allow Jython/IronPython/RustPython to be external plugin</li>
-                <li class="fragment">rich API to get data about the created virtual environments</li>
-                <li class="fragment">unify virtual environment mechanism - adopt venv style - PEP-405</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>The chopping board</h2>
-            <ul>
-                <li>relocatable virtual environments<span class="fragment">, <a
-                        href="https://github.com/pypa/virtualenv/issues/1549">provide alternative path</a></span>
-                </li>
-                <li class="fragment">drop deprecated flags, e.g., <a
-                        href="https://github.com/pypa/virtualenv/issues/1681">--no-site-packages</a>
-                    <img class="fragment" src="img/flag_gone.png"/>
-                </li>
-                <li class="fragment">entire project in one file</li>
-                <li class="fragment">stdlib only dependencies (and no vendored packages)</li>
-
-            </ul>
+          <h2>What do we need to add?</h2>
+          <ul>
+            <li>
+              extensible - allow Jython/IronPython/RustPython to be external
+              plugin
+            </li>
+            <li class="fragment">
+              rich API to get data about the created virtual environments
+            </li>
+            <li class="fragment">
+              unify virtual environment mechanism - adopt venv style - PEP-405
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Let people know</h2>
-            <ul>
-                <li><a href="https://github.com/pypa/virtualenv/issues/1366">RFC posted on GitHub issue - June 10th
-                    2019</a></li>
-            </ul>
-            <br/>
-            <img class="fragment" src="img/ambitious.png"/>
-            <br/>
-            <img class="fragment" src="img/optimist.png"/>
+          <h2>The chopping board</h2>
+          <ul>
+            <li>
+              relocatable virtual environments<span class="fragment"
+                >,
+                <a href="https://github.com/pypa/virtualenv/issues/1549"
+                  >provide alternative path</a
+                ></span
+              >
+            </li>
+            <li class="fragment">
+              drop deprecated flags, e.g.,
+              <a href="https://github.com/pypa/virtualenv/issues/1681"
+                >--no-site-packages</a
+              >
+              <img class="fragment" src="img/flag_gone.png" />
+            </li>
+            <li class="fragment">entire project in one file</li>
+            <li class="fragment">
+              stdlib only dependencies (and no vendored packages)
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Under construction - until January 2020</h2>
-            <img src="img/under_construction.png"/>
+          <h2>Let people know</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/pypa/virtualenv/issues/1366"
+                >RFC posted on GitHub issue - June 10th 2019</a
+              >
+            </li>
+          </ul>
+          <br />
+          <img class="fragment" src="img/ambitious.png" />
+          <br />
+          <img class="fragment" src="img/optimist.png" />
         </section>
 
         <section>
-            <h2>Do restricted/beta releases - 2020</h2>
-            <ul>
-                <li><a href="https://github.com/pypa/virtualenv/pull/1481">January 6th - first review request</a></li>
-                <li class="fragment"><a href="https://pypi.org/project/virtualenv/20.0.0b1/">January 28th - first
-                    beta</a></li>
-                <li class="fragment"><a href="https://pypi.org/project/virtualenv/20.0.0b2/">February 4th - second
-                    beta</a></li>
-                <li class="fragment"><a href="https://pypi.org/project/virtualenv/20.0.0">February 10th - first public
-                    release</a></li>
-            </ul>
+          <h2>Under construction - until January 2020</h2>
+          <img src="img/under_construction.png" />
         </section>
 
         <section>
-            <h2>The crew - first release</h2>
-            <ul>
-                <li>Siddhant Kumar - migrate activation scripts</li>
-                <li class="fragment">Bernát Gábor - everything else</li>
-            </ul>
+          <h2>Do restricted/beta releases - 2020</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/pypa/virtualenv/pull/1481"
+                >January 6th - first review request</a
+              >
+            </li>
+            <li class="fragment">
+              <a href="https://pypi.org/project/virtualenv/20.0.0b1/"
+                >January 28th - first beta</a
+              >
+            </li>
+            <li class="fragment">
+              <a href="https://pypi.org/project/virtualenv/20.0.0b2/"
+                >February 4th - second beta</a
+              >
+            </li>
+            <li class="fragment">
+              <a href="https://pypi.org/project/virtualenv/20.0.0"
+                >February 10th - first public release</a
+              >
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>The crew - community adoption +27 in 3 months</h2>
-            <pre>
+          <h2>The crew - first release</h2>
+          <ul>
+            <li>Siddhant Kumar - migrate activation scripts</li>
+            <li class="fragment">Bernát Gábor - everything else</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>The crew - community adoption +27 in 3 months</h2>
+          <pre>
                 <code data-trim style="font-size: 0.8em; max-height: 600px">
                   12907 author Bernát Gábor
                     900 author Siddhant Kumar
@@ -629,98 +758,123 @@
         </section>
 
         <section>
-            <h2>Widely publicize the re-release</h2>
-            <ul>
-                <li>forum post <a href="https://discuss.python.org/t/virtualenv-20-0-0-beta1-is-available/3077"> Python
-                    Discourse -
-                    Packaging section </a> - explain:
-                    <ul class="fragment">
-                        <li>why the rewrite</li>
-                        <li> what are the new features</li>
-                    </ul>
-                </li>
-                <li class="fragment">
-                    <a href="https://mail.python.org/archives/list/distutils-sig@python.org/thread/KLUZUTWO3QQL2LABKZQB5K3MZMWHTD4E/">
-                        distutils mail list</a>
-                </li>
-                <li class="fragment"><a href="https://pypi.org/project/virtualenv/20.0.0/"> PyPi - version 20.0.0</a>
-                </li>
-            </ul>
+          <h2>Widely publicize the re-release</h2>
+          <ul>
+            <li>
+              forum post
+              <a
+                href="https://discuss.python.org/t/virtualenv-20-0-0-beta1-is-available/3077"
+              >
+                Python Discourse - Packaging section
+              </a>
+              - explain:
+              <ul class="fragment">
+                <li>why the rewrite</li>
+                <li>what are the new features</li>
+              </ul>
+            </li>
+            <li class="fragment">
+              <a
+                href="https://mail.python.org/archives/list/distutils-sig@python.org/thread/KLUZUTWO3QQL2LABKZQB5K3MZMWHTD4E/"
+              >
+                distutils mail list</a
+              >
+            </li>
+            <li class="fragment">
+              <a href="https://pypi.org/project/virtualenv/20.0.0/">
+                PyPi - version 20.0.0</a
+              >
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2><a href="https://twitter.com/gjbernat/status/1226803593535279104">Twitter</a> announcement - 15k
-                impressions</h2>
-            <img src="img/twitter.png" style="max-height: 550px;"/>
+          <h2>
+            <a href="https://twitter.com/gjbernat/status/1226803593535279104"
+              >Twitter</a
+            >
+            announcement - 15k impressions
+          </h2>
+          <img src="img/twitter.png" style="max-height: 550px;" />
         </section>
 
         <section>
-            <h1>Technical gotchas</h1>
-            <img src="img/technical_gotchas.png" style="max-height: 550px;"/>
+          <h1>Technical gotchas</h1>
+          <img src="img/technical_gotchas.png" style="max-height: 550px;" />
         </section>
 
         <section>
-            <h2>Consider people stuck on old version</h2>
-            <ul>
-                <li class="fragment">keep code on a legacy branch</li>
-                <li class="fragment">add a legacy docs tag on readthedocs</li>
-                <li class="fragment">new changelog at the end points to legacy changelog</li>
-                <li class="fragment">keep releasing community contributions - <a
-                        href="https://pypi.org/project/virtualenv/16.7.10/">16.7.10 -
-                    Feb 24, 2020</a> (February 10th first new)
-                </li>
-            </ul>
+          <h2>Consider people stuck on old version</h2>
+          <ul>
+            <li class="fragment">keep code on a legacy branch</li>
+            <li class="fragment">add a legacy docs tag on readthedocs</li>
+            <li class="fragment">
+              new changelog at the end points to legacy changelog
+            </li>
+            <li class="fragment">
+              keep releasing community contributions -
+              <a href="https://pypi.org/project/virtualenv/16.7.10/"
+                >16.7.10 - Feb 24, 2020</a
+              >
+              (February 10th first new)
+            </li>
+          </ul>
         </section>
 
-
         <section>
-            <h2>CPython is a very diverse snake pit</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>sysconfig</th>
-                    <th>value</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>scripts</td>
-                    <td><code>{base}/bin</code></td>
-                </tr>
-                <tr>
-                    <td>data</td>
-                    <td><code>{base}</code></td>
-                </tr>
-                <tr>
-                    <td>include</td>
-                    <td><code>{base}/include/python{py_version_short}</code></td>
-                </tr>
-                <tr>
-                    <td>stdlib</td>
-                    <td><code>{base}/lib64/python{py_version_short}</code></td>
-                </tr>
-                <tr>
-                    <td>platstdlib</td>
-                    <td><code>{platbase}/lib64/python{py_version_short}</code></td>
-                </tr>
-                <tr>
-                    <td>purelib</td>
-                    <td><code>{base}/lib/python{py_version_short}/site-packages</code></td>
-                </tr>
-                <tr>
-                    <td>platlib</td>
-                    <td><code>{platbase}/lib64/python{py_version_short}/site-packages</code></td>
-                </tr>
-                </tbody>
-            </table>
-
+          <h2>CPython is a very diverse snake pit</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>sysconfig</th>
+                <th>value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>scripts</td>
+                <td><code>{base}/bin</code></td>
+              </tr>
+              <tr>
+                <td>data</td>
+                <td><code>{base}</code></td>
+              </tr>
+              <tr>
+                <td>include</td>
+                <td><code>{base}/include/python{py_version_short}</code></td>
+              </tr>
+              <tr>
+                <td>stdlib</td>
+                <td><code>{base}/lib64/python{py_version_short}</code></td>
+              </tr>
+              <tr>
+                <td>platstdlib</td>
+                <td><code>{platbase}/lib64/python{py_version_short}</code></td>
+              </tr>
+              <tr>
+                <td>purelib</td>
+                <td>
+                  <code>{base}/lib/python{py_version_short}/site-packages</code>
+                </td>
+              </tr>
+              <tr>
+                <td>platlib</td>
+                <td>
+                  <code
+                    >{platbase}/lib64/python{py_version_short}/site-packages</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </section>
         <section>
-            <h2>Linux distributions - Fedora</h2>
-            <ul>
-                <li>
-                    On Fedora, platlib is under <code>lib64</code>, while purelib is <code>lib</code>
-                    <pre>
+          <h2>Linux distributions - Fedora</h2>
+          <ul>
+            <li>
+              On Fedora, platlib is under <code>lib64</code>, while purelib is
+              <code>lib</code>
+              <pre>
                 <code data-trim style="font-size: 0.8em; max-height: 600px">
                       env
                     ├──   bin
@@ -736,112 +890,163 @@
                     └──   pyvenv.cfg
                 </code>
             </pre>
-                </li>
-            </ul>
-        </section>
-
-
-        <section>
-            <h2>Linux distributions - Debian</h2>
-            <ul>
-                <li>Debian does not install <code>venv</code> by default, <code>python3-venv</code></li>
-                <li class="fragment">pip uses <code>distutils</code> paths to install, separate from
-                    <code>sysconfig</code></li>
-                <li class="fragment">they patch distutils paths to separate <code>apt</code> and <code>pip</code>
-                    installs
-                </li>
-                <li class="fragment">use distutils paths for virtual environment, sysconfig for host Python</li>
-            </ul>
-        </section>
-
-
-        <section>
-            <h2>Linux distributions - CentOs</h2>
-            <ul>
-                <li>ships with <code>pip 9</code> <span
-                        class="fragment">- does not understand <code>python-requires</code> on wheels</span></li>
-                <li class="fragment">had to vendor <code>six.ensure_path/ensure_text</code>, relax <code>six</code>
-                    requirement
-                </li>
-                <li class="fragment">Better error message in <code>setup.py</code></li>
-            </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>macOs - so many Pythons</h2>
-
-            <ul>
-                <li>install from <code>python.org</code>/<code>pyenv</code></li>
-                <li class="fragment">part of the OS <code>/usr/bin/python</code> -> <code>/System/Library/Frameworks/Python.framework/Versions/2.7</code>
-                </li>
-                <li class="fragment">brew installation via <code>python@2</code> and <code>python@3</code></li>
-                <li class="fragment">XCode - Developer Tools v2 <code>/Library/Frameworks/Python.framework/</code>
-                </li>
-                <li class="fragment">XCode - Developer Tools v3 <code>/Library/Frameworks/Python3.framework/</code> a
-                </li>
-                <li class="fragment">Apple shipped Python are hard coded to static path (<a
-                        href="https://en.wikipedia.org/wiki/Mach-O">Mach-o</a>)
-                </li>
-            </ul>
+          <h2>Linux distributions - Debian</h2>
+          <ul>
+            <li>
+              Debian does not install <code>venv</code> by default,
+              <code>python3-venv</code>
+            </li>
+            <li class="fragment">
+              pip uses <code>distutils</code> paths to install, separate from
+              <code>sysconfig</code>
+            </li>
+            <li class="fragment">
+              they patch distutils paths to separate <code>apt</code> and
+              <code>pip</code>
+              installs
+            </li>
+            <li class="fragment">
+              use distutils paths for virtual environment, sysconfig for host
+              Python
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>MacOs - fixing distutils</h2>
-            <ul>
-                <li>pip uses distutils to determine where to install</li>
-
-                <li class="fragment"><a
-                        href=" https://docs.python.org/3/install/index.html#distutils-configuration-files">distutils can
-                    be configured via files</a>
-                    <table class="docutils align-default">
-                        <colgroup>
-                            <col style="width: 18%">
-                            <col style="width: 73%">
-                        </colgroup>
-                        <thead>
-                        <tr class="row-odd">
-                            <th class="head">Type of file</th>
-                            <th class="head">Location and filename</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="row-even">
-                            <td>system</td>
-                            <td><code class="file docutils literal notranslate"><em><span
-                                    class="pre">prefix</span></em><span class="pre">/lib/python</span><em><span
-                                    class="pre">ver</span></em><span
-                                    class="pre">/distutils/distutils.cfg</span></code></td>
-                        </tr>
-                        <tr class="row-odd">
-                            <td>personal</td>
-                            <td><code class="file docutils literal notranslate"><span
-                                    class="pre">$HOME/.pydistutils.cfg</span></code></td>
-                        </tr>
-                        <tr class="row-even">
-                            <td>local</td>
-                            <td><code class="file docutils literal notranslate"><span
-                                    class="pre">setup.cfg</span></code>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </li>
-                <li class="fragment">can set <code>prefix</code> and <code>install_{purelib,platlib,headers,scripts,data}</code>
-                </li>
-                <li class="fragment">closed 5 times, be tenacious about fixing bugs</li>
-            </ul>
+          <h2>Linux distributions - CentOs</h2>
+          <ul>
+            <li>
+              ships with <code>pip 9</code>
+              <span class="fragment"
+                >- does not understand <code>python-requires</code> on
+                wheels</span
+              >
+            </li>
+            <li class="fragment">
+              had to vendor <code>six.ensure_path/ensure_text</code>, relax
+              <code>six</code>
+              requirement
+            </li>
+            <li class="fragment">
+              Better error message in <code>setup.py</code>
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Windows store Python</h2>
-            <ul>
-                <li>delegate creation to env (needs implementation for inline run)</li>
-                <li class="fragment">surprising behaviour, <a href="https://github.com/pypa/virtualenv/issues/1709">cannot
-                    check if exists (no read), but can run</a>
-                </li>
-            </ul>
+          <h2>macOs - so many Pythons</h2>
 
-            <pre class="fragment">
+          <ul>
+            <li>install from <code>python.org</code>/<code>pyenv</code></li>
+            <li class="fragment">
+              part of the OS <code>/usr/bin/python</code> ->
+              <code
+                >/System/Library/Frameworks/Python.framework/Versions/2.7</code
+              >
+            </li>
+            <li class="fragment">
+              brew installation via <code>python@2</code> and
+              <code>python@3</code>
+            </li>
+            <li class="fragment">
+              XCode - Developer Tools v2
+              <code>/Library/Frameworks/Python.framework/</code>
+            </li>
+            <li class="fragment">
+              XCode - Developer Tools v3
+              <code>/Library/Frameworks/Python3.framework/</code> a
+            </li>
+            <li class="fragment">
+              Apple shipped Python are hard coded to static path (<a
+                href="https://en.wikipedia.org/wiki/Mach-O"
+                >Mach-o</a
+              >)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>MacOs - fixing distutils</h2>
+          <ul>
+            <li>pip uses distutils to determine where to install</li>
+
+            <li class="fragment">
+              <a
+                href=" https://docs.python.org/3/install/index.html#distutils-configuration-files"
+                >distutils can be configured via files</a
+              >
+              <table class="docutils align-default">
+                <colgroup>
+                  <col style="width: 18%;" />
+                  <col style="width: 73%;" />
+                </colgroup>
+                <thead>
+                  <tr class="row-odd">
+                    <th class="head">Type of file</th>
+                    <th class="head">Location and filename</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="row-even">
+                    <td>system</td>
+                    <td>
+                      <code class="file docutils literal notranslate"
+                        ><em><span class="pre">prefix</span></em
+                        ><span class="pre">/lib/python</span
+                        ><em><span class="pre">ver</span></em
+                        ><span class="pre">/distutils/distutils.cfg</span></code
+                      >
+                    </td>
+                  </tr>
+                  <tr class="row-odd">
+                    <td>personal</td>
+                    <td>
+                      <code class="file docutils literal notranslate"
+                        ><span class="pre">$HOME/.pydistutils.cfg</span></code
+                      >
+                    </td>
+                  </tr>
+                  <tr class="row-even">
+                    <td>local</td>
+                    <td>
+                      <code class="file docutils literal notranslate"
+                        ><span class="pre">setup.cfg</span></code
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li class="fragment">
+              can set <code>prefix</code> and
+              <code>install_{purelib,platlib,headers,scripts,data}</code>
+            </li>
+            <li class="fragment">
+              closed 5 times, be tenacious about fixing bugs
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Windows store Python</h2>
+          <ul>
+            <li>
+              delegate creation to env (needs implementation for inline run)
+            </li>
+            <li class="fragment">
+              surprising behaviour,
+              <a href="https://github.com/pypa/virtualenv/issues/1709"
+                >cannot check if exists (no read), but can run</a
+              >
+            </li>
+          </ul>
+
+          <pre class="fragment">
                 <code data-trim style="font-size: 0.9em">
                 PS C:\Users\traveler\git\virtualenv> python -c 'import sys; from pathlib import Path; import os; \
                     print(sys.executable); \
@@ -862,22 +1067,33 @@
         </section>
 
         <section>
-            <h2>PyPy maturing - quick to answer/fix</h2>
-            <ul>
-                <li><a href="https://foss.heptapod.net/pypy/pypy/-/issues/3159">pypy3.6-7.3.0 venv fails with --copies
-                    on Linux</a></li>
-                <li><a href="https://foss.heptapod.net/pypy/pypy/-/issues/3155">pypy on Windows uses non Windows install
-                    path</a></li>
-                <li><a href="https://foss.heptapod.net/pypy/pypy/-/issues/3147">venv non-ASCII support - Windows</a>
-                </li>
-            </ul>
+          <h2>PyPy maturing - quick to answer/fix</h2>
+          <ul>
+            <li>
+              <a href="https://foss.heptapod.net/pypy/pypy/-/issues/3159"
+                >pypy3.6-7.3.0 venv fails with --copies on Linux</a
+              >
+            </li>
+            <li>
+              <a href="https://foss.heptapod.net/pypy/pypy/-/issues/3155"
+                >pypy on Windows uses non Windows install path</a
+              >
+            </li>
+            <li>
+              <a href="https://foss.heptapod.net/pypy/pypy/-/issues/3147"
+                >venv non-ASCII support - Windows</a
+              >
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Expect the unexpected - pyc only mode</h2>
-            <ul>
-                <li>Python 2 uses the host os.py as landmark file to detect stdlib</li>
-                <pre>
+          <h2>Expect the unexpected - pyc only mode</h2>
+          <ul>
+            <li>
+              Python 2 uses the host os.py as landmark file to detect stdlib
+            </li>
+            <pre>
                 <code data-trim style="font-size: 0.8em; max-height: 600px">
                      env
                     ├──  bin
@@ -898,17 +1114,25 @@
                     └──  pyvenv.cfg
                 </code>
             </pre>
-                <li class="fragment">Python can still function with only pyc files</li>
-                <li class="fragment">benefits of doing this: obfuscate source code or maximize storage</li>
-                <li class="fragment">solution: require only one of the py/pyc files</li>
-            </ul>
-            <p></p>
+            <li class="fragment">
+              Python can still function with only pyc files
+            </li>
+            <li class="fragment">
+              benefits of doing this: obfuscate source code or maximize storage
+            </li>
+            <li class="fragment">
+              solution: require only one of the py/pyc files
+            </li>
+          </ul>
+          <p></p>
         </section>
         <section>
-            <h2>Expect the unexpected - pyc only mode</h2>
-            <ul>
-                <li>Python 2 uses the host os.py as landmark file to detect stdlib</li>
-                <pre>
+          <h2>Expect the unexpected - pyc only mode</h2>
+          <ul>
+            <li>
+              Python 2 uses the host os.py as landmark file to detect stdlib
+            </li>
+            <pre>
                 <code data-trim style="font-size: 0.8em; max-height: 600px">
                      env
                     ├──  bin
@@ -929,146 +1153,208 @@
                     └──  pyvenv.cfg
                 </code>
             </pre>
-                <li>Python operates can work with pyc only</li>
-                <li>benefits of doing this: obfuscate source code or maximize storage</li>
-                <li>solution: require only one of the py/pyc files</li>
-            </ul>
-            <p></p>
+            <li>Python operates can work with pyc only</li>
+            <li>
+              benefits of doing this: obfuscate source code or maximize storage
+            </li>
+            <li>solution: require only one of the py/pyc files</li>
+          </ul>
+          <p></p>
         </section>
 
         <section>
-            <h2>Seeders - pip</h2>
-            <ul>
-                <li class="fragment">existing seed mechanism (venv does similar) - 2 seconds +
+          <h2>Seeders - pip</h2>
+          <ul>
+            <li class="fragment">
+              existing seed mechanism (venv does similar) - 2 seconds + pip
 
-                    pip
-
-                    <pre>
+              <pre>
                 <code data-trim style="font-size: 0.8em; max-height: 600px">
                     export PYTHONPATH=pip-20.1.1-py2.py3-none-any.whl
 
                     env/bin/python -m pip install pip-20.1.1-py2.py3-none-any.whl
                 </code>
             </pre>
+            </li>
+            <li class="fragment">
+              pip is a general purpose install tool, some of the (avoidable)
+              overheads:
+              <ul>
+                <li class="fragment">wheel validation</li>
+                <li class="fragment">startup time</li>
+                <li class="fragment">self upgrade check</li>
+                <li class="fragment">
+                  extracting files from a zip usually triggers the antivirus
                 </li>
-                <li class="fragment">pip is a general purpose install tool, some of the (avoidable) overheads:
-                    <ul>
-                        <li class="fragment">wheel validation</li>
-                        <li class="fragment">startup time</li>
-                        <li class="fragment">self upgrade check</li>
-                        <li class="fragment">extracting files from a zip usually triggers the antivirus</li>
-                    </ul>
-                </li>
-            </ul>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Seeders - app-data - cache</h2>
-            <ul>cache what we can cache to avoid performing the same operation
-                <li class="fragment"><code>appdirs</code> - for platform specific application data location
+          <h2>Seeders - app-data - cache</h2>
+          <ul>
+            cache what we can cache to avoid performing the same operation
+            <li class="fragment">
+              <code>appdirs</code> - for platform specific application data
+              location
+            </li>
+            <li class="fragment">
+              create base image into app data folder:
+              <ul>
+                <li>validate wheel</li>
+                <li>extract wheel</li>
+                <li>generate pyc files, <code>INSTALLER</code></li>
+                <li>
+                  fix <code>RECORDS</code> - add metadata + console script files
                 </li>
-                <li class="fragment">create base image into app data folder:
-                    <ul>
-                        <li>validate wheel</li>
-                        <li>extract wheel</li>
-                        <li>generate pyc files, <code>INSTALLER</code></li>
-                        <li>fix <code>RECORDS</code> - add metadata + console script files</li>
-                    </ul>
+              </ul>
+            </li>
+            <li class="fragment">
+              install operation
+              <ul>
+                <li>
+                  generate console scripts (<code>pip</code>, <code>pip3</code>,
+                  <code>pip3.8</code>)
                 </li>
-                <li class="fragment">install operation
-                    <ul>
-                        <li>generate console scripts (<code>pip</code>, <code>pip3</code>, <code>pip3.8</code>)</li>
-                        <li>copy/symlink from app data to <code>purelib</code></li>
-                    </ul>
-                </li>
-            </ul>
+                <li>copy/symlink from app data to <code>purelib</code></li>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Seed packages - auto update?</h2>
-            <ul>
-                <li>should we
-                    <ul>
-                        <li>install latest pip/setuptools/wheel <span style="font-weight: bold; color: #fdf6e3"> ⇒ convenience and ecosystem</span>
-                        </li>
-                        <li>install embedded pip/setuptools/wheel<span
-                                style="font-weight: bold;color: #fdf6e3"> ⇒ speed and stability</span></li>
-                    </ul>
-
+          <h2>Seed packages - auto update?</h2>
+          <ul>
+            <li>
+              should we
+              <ul>
+                <li>
+                  install latest pip/setuptools/wheel
+                  <span style="font-weight: bold; color: #fdf6e3;">
+                    ⇒ convenience and ecosystem</span
+                  >
                 </li>
-                <li style="color: #fdf6e3">middle-ground - update every two weeks, use if at least 28 days old</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Seed packages - auto update?</h2>
-            <ul>
-                <li>should we
-                    <ul>
-                        <li>install latest pip/setuptools/wheel <span style="font-weight: bold"> ⇒ convenience and ecosystem</span>
-                        </li>
-                        <li>install embedded pip/setuptools/wheel<span
-                                style="font-weight: bold"> ⇒ speed and stability</span></li>
-                    </ul>
-
+                <li>
+                  install embedded pip/setuptools/wheel<span
+                    style="font-weight: bold; color: #fdf6e3;"
+                  >
+                    ⇒ speed and stability</span
+                  >
                 </li>
-                <li class="fragment">middle-ground update every two weeks, use if at least 28 days old</li>
-            </ul>
+              </ul>
+            </li>
+            <li style="color: #fdf6e3;">
+              middle-ground - update every two weeks, use if at least 28 days
+              old
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Seed packages - resilience</h2>
-            <ul>
-                new approaches/solutions will expose new failure types
-                <li class="fragment">handle if app data is in read only mode</li>
-                <li class="fragment">always default to safer methods - copy over symlink</li>
-            </ul>
+          <h2>Seed packages - auto update?</h2>
+          <ul>
+            <li>
+              should we
+              <ul>
+                <li>
+                  install latest pip/setuptools/wheel
+                  <span style="font-weight: bold;">
+                    ⇒ convenience and ecosystem</span
+                  >
+                </li>
+                <li>
+                  install embedded pip/setuptools/wheel<span
+                    style="font-weight: bold;"
+                  >
+                    ⇒ speed and stability</span
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="fragment">
+              middle-ground update every two weeks, use if at least 28 days old
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Be friendly and plan for redistribution</h2>
-            <ul>
-                Fedora, Debian, etc. often apply patches on top of our source
-                <li class="fragment">understand why</li>
-                <li class="fragment">make it easy and straight forward what and where to patch</li>
-                <li class="fragment"><a
-                        href="https://virtualenv.pypa.io/en/latest/user_guide.html#embed-wheels-for-distributions">document
-                    what and where should be patched</a></li>
-            </ul>
+          <h2>Seed packages - resilience</h2>
+          <ul>
+            new approaches/solutions will expose new failure types
+            <li class="fragment">handle if app data is in read only mode</li>
+            <li class="fragment">
+              always default to safer methods - copy over symlink
+            </li>
+          </ul>
+        </section>
 
+        <section>
+          <h2>Be friendly and plan for redistribution</h2>
+          <ul>
+            Fedora, Debian, etc. often apply patches on top of our source
+            <li class="fragment">understand why</li>
+            <li class="fragment">
+              make it easy and straight forward what and where to patch
+            </li>
+            <li class="fragment">
+              <a
+                href="https://virtualenv.pypa.io/en/latest/user_guide.html#embed-wheels-for-distributions"
+                >document what and where should be patched</a
+              >
+            </li>
+          </ul>
         </section>
         <section>
-            <h2>Download only (no install) mode</h2>
-            <ul>
-                <li>with old version, you could just download repository and then run <code>virtualenv.py</code></li>
-                <li class="fragment">follow prior art with pip
-                    <pre><code class="bash" data-trim>
+          <h2>Download only (no install) mode</h2>
+          <ul>
+            <li>
+              with old version, you could just download repository and then run
+              <code>virtualenv.py</code>
+            </li>
+            <li class="fragment">
+              follow prior art with pip
+              <pre><code class="bash" data-trim>
                   curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
                   python get-pip.py
                 </code></pre>
-                </li>
-                <li class="fragment"> take advantage of newer Python features: <br/> <span class="fragment">
-                    create a <a href="https://docs.python.org/3/library/zipapp.html">zipapp</a> package <a
-                        href="https://virtualenv.pypa.io/en/latest/installation.html#via-zipapp">requiring no
-                    install</a>
-                    <pre>
+            </li>
+            <li class="fragment">
+              take advantage of newer Python features: <br />
+              <span class="fragment">
+                create a
+                <a href="https://docs.python.org/3/library/zipapp.html"
+                  >zipapp</a
+                >
+                package
+                <a
+                  href="https://virtualenv.pypa.io/en/latest/installation.html#via-zipapp"
+                  >requiring no install</a
+                >
+                <pre>
                 <code class="bash" data-trim>
                   curl https://bootstrap.pypa.io/virtualenv.pyz -o virtualenv.pyz
                   python3.8 virtualenv.pyz env
                 </code>
             </pre>
-                    </span>
-                </li>
-                <li class="fragment">
-                    Make it easy to update, <a href="https://bootstrap.pypa.io/virtualenv.pyz">https://bootstrap.pypa.io/virtualenv.pyz</a>
-                    automatically feeds from <a href="https://github.com/pypa/get-virtualenv">https://github.com/pypa/get-virtualenv</a>
-                </li>
-            </ul>
+              </span>
+            </li>
+            <li class="fragment">
+              Make it easy to update,
+              <a href="https://bootstrap.pypa.io/virtualenv.pyz"
+                >https://bootstrap.pypa.io/virtualenv.pyz</a
+              >
+              automatically feeds from
+              <a href="https://github.com/pypa/get-virtualenv"
+                >https://github.com/pypa/get-virtualenv</a
+              >
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>zipapp content structure</h2>
-            <pre>
+          <h2>zipapp content structure</h2>
+          <pre>
                 <code data-line-numbers="1-12" data-trim style="font-size: 0.8em; max-height: 600px;">
                  .
                 ├──  __main__.py
@@ -1106,13 +1392,13 @@
         </section>
 
         <section>
-            <h2>zipapp with dynamic dependency</h2>
-            <ul>
-                <li>some dependencies are OS specific</li>
-                <li>some dependencies are Python version specific</li>
-            </ul>
+          <h2>zipapp with dynamic dependency</h2>
+          <ul>
+            <li>some dependencies are OS specific</li>
+            <li>some dependencies are Python version specific</li>
+          </ul>
 
-            <pre>
+          <pre>
                 <code data-trim style="font-size: 0.97em">
                  install_requires =
                     appdirs>=1.4.3,<2
@@ -1127,98 +1413,98 @@
         </section>
 
         <section>
-            <h2>zipapp with dynamic dependencies</h2>
-            <table style="font-size: 0.8em">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>3.9</th>
-                    <th>3.8</th>
-                    <th>3.7</th>
-                    <th>3.6</th>
-                    <th>3.5</th>
-                    <th>3.4</th>
-                    <th>2.7</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>appdirs</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                </tr>
-                <tr>
-                    <td>distlib</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                </tr>
-                <tr>
-                    <td>filelock</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                </tr>
-                <tr>
-                    <td>six</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                </tr>
-                <tr>
-                    <td>importlib-metadata</td>
-                    <td></td>
-                    <td></td>
-                    <td>1.7.0</td>
-                    <td>1.7.0</td>
-                    <td>1.7.0</td>
-                    <td>1.1.3</td>
-                    <td>1.1.3</td>
-                </tr>
-                <tr>
-                    <td>importlib-resources</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>2.0.1</td>
-                    <td>2.0.1</td>
-                    <td>1.0.2</td>
-                    <td>1.0.2</td>
-                </tr>
-                <tr>
-                    <td>pathlib2</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>2.3.5</td>
-                    <td>2.3.5</td>
-                </tr>
-                </tbody>
-            </table>
+          <h2>zipapp with dynamic dependencies</h2>
+          <table style="font-size: 0.8em;">
+            <thead>
+              <tr>
+                <th></th>
+                <th>3.9</th>
+                <th>3.8</th>
+                <th>3.7</th>
+                <th>3.6</th>
+                <th>3.5</th>
+                <th>3.4</th>
+                <th>2.7</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>appdirs</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+              </tr>
+              <tr>
+                <td>distlib</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+              </tr>
+              <tr>
+                <td>filelock</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+              </tr>
+              <tr>
+                <td>six</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+              </tr>
+              <tr>
+                <td>importlib-metadata</td>
+                <td></td>
+                <td></td>
+                <td>1.7.0</td>
+                <td>1.7.0</td>
+                <td>1.7.0</td>
+                <td>1.1.3</td>
+                <td>1.1.3</td>
+              </tr>
+              <tr>
+                <td>importlib-resources</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>2.0.1</td>
+                <td>2.0.1</td>
+                <td>1.0.2</td>
+                <td>1.0.2</td>
+              </tr>
+              <tr>
+                <td>pathlib2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>2.3.5</td>
+                <td>2.3.5</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
 
         <section>
-            <h2>zipapp content structure</h2>
-            <pre>
+          <h2>zipapp content structure</h2>
+          <pre>
                 <code data-line-numbers="13-32" data-trim style="font-size: 0.8em; max-height: 600px;">
                  .
                 ├──  __main__.py
@@ -1256,186 +1542,242 @@
         </section>
 
         <section>
-            <h2>Use import hooks within <a
-                    href="https://github.com/pypa/virtualenv/blob/master/tasks/__main__zipapp.py">zipapp</a></h2>
+          <h2>
+            Use import hooks within
+            <a
+              href="https://github.com/pypa/virtualenv/blob/master/tasks/__main__zipapp.py"
+              >zipapp</a
+            >
+          </h2>
 
-            <ul>
-                <li>Python 2: <a href="https://www.python.org/dev/peps/pep-0302/">PEP-302 - New import hooks</a></li>
-                <li>Python 3: <a href="https://www.python.org/dev/peps/pep-0302/">PEP-451 - A ModuleSpec Type for the
-                    Import System</a></li>
-            </ul>
+          <ul>
+            <li>
+              Python 2:
+              <a href="https://www.python.org/dev/peps/pep-0302/"
+                >PEP-302 - New import hooks</a
+              >
+            </li>
+            <li>
+              Python 3:
+              <a href="https://www.python.org/dev/peps/pep-0302/"
+                >PEP-451 - A ModuleSpec Type for the Import System</a
+              >
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>zipapp with dynamic dependencies</h2>
-            <table style="font-size: 0.8em">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>3.9</th>
-                    <th>3.8</th>
-                    <th>3.7</th>
-                    <th>3.6</th>
-                    <th>3.5</th>
-                    <th>3.4</th>
-                    <th>2.7</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>appdirs</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                    <td>1.4.4</td>
-                </tr>
-                <tr>
-                    <td>distlib</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                    <td>0.3.1</td>
-                </tr>
-                <tr>
-                    <td>filelock</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                    <td>3.0.12</td>
-                </tr>
-                <tr>
-                    <td>six</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                    <td>1.15.0</td>
-                </tr>
-                <tr>
-                    <td>importlib-metadata</td>
-                    <td></td>
-                    <td></td>
-                    <td>1.7.0</td>
-                    <td>1.7.0</td>
-                    <td>1.7.0</td>
-                    <td>1.1.3</td>
-                    <td>1.1.3</td>
-                </tr>
-                <tr>
-                    <td>importlib-resources</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>2.0.1</td>
-                    <td>2.0.1</td>
-                    <td>1.0.2</td>
-                    <td>1.0.2</td>
-                </tr>
-                <tr>
-                    <td>pathlib2</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>2.3.5</td>
-                    <td>2.3.5</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-
-
-        <section>
-            <h2>The cherry on top</h2>
-            <ul>
-                <li><a href="https://bugs.python.org/issue22490">Fix upstream bugs before upstream</a> <br/> - strip
-                    <code>__PYVENV_LAUNCHER__</code>
-                    on MacOs
-                </li>
-                <li class="fragment">Do not version track virtual environments - add <code>.gitignore</code> May 20th
-                    <img src="img/gitignore.png">
-                </li>
-            </ul>
+          <h2>zipapp with dynamic dependencies</h2>
+          <table style="font-size: 0.8em;">
+            <thead>
+              <tr>
+                <th></th>
+                <th>3.9</th>
+                <th>3.8</th>
+                <th>3.7</th>
+                <th>3.6</th>
+                <th>3.5</th>
+                <th>3.4</th>
+                <th>2.7</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>appdirs</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+                <td>1.4.4</td>
+              </tr>
+              <tr>
+                <td>distlib</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+                <td>0.3.1</td>
+              </tr>
+              <tr>
+                <td>filelock</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+                <td>3.0.12</td>
+              </tr>
+              <tr>
+                <td>six</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+                <td>1.15.0</td>
+              </tr>
+              <tr>
+                <td>importlib-metadata</td>
+                <td></td>
+                <td></td>
+                <td>1.7.0</td>
+                <td>1.7.0</td>
+                <td>1.7.0</td>
+                <td>1.1.3</td>
+                <td>1.1.3</td>
+              </tr>
+              <tr>
+                <td>importlib-resources</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>2.0.1</td>
+                <td>2.0.1</td>
+                <td>1.0.2</td>
+                <td>1.0.2</td>
+              </tr>
+              <tr>
+                <td>pathlib2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>2.3.5</td>
+                <td>2.3.5</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
 
         <section>
-            <h2>Breaking the world</h2>
-            <ul>
-                <li>since 2018 October - 41 successful releases</li>
-                <li class="fragment">Friday evening release - typo in <code>setup.cfg</code>
-                    <img src="img/typo.png"/>
-                    <img class="fragment" src="img/fixed.png"/>
-                </li>
-                <li class="fragment">Always be available in the next 1-2 hours post release</li>
-            </ul>
-        </section>
-
-
-        <section>
-            <h1>Conclusion</h1>
-            <img alt="Silky" src="img/conclusion.jpg" style="margin: 0; width: 720px;"/>
-        </section>
-        <section>
-            <h2>Lessons learned</h2>
-            <ul>
-                <li class="fragment">Have a well defined delivery plan</li>
-                <li class="fragment">Test a lot, automate via CIs</li>
-                <li class="fragment">Prepare for a lot of bug fixes (on short turnaround - 27 releases in 5 months)</li>
-                <li class="fragment">Always be available post release</li>
-                <li class="fragment">Be ready to periodically re-evaluate things from the ground up</li>
-                <li class="fragment">In general (but especially in opensource), be nice</li>
-            </ul>
+          <h2>The cherry on top</h2>
+          <ul>
+            <li>
+              <a href="https://bugs.python.org/issue22490"
+                >Fix upstream bugs before upstream</a
+              >
+              <br />
+              - strip
+              <code>__PYVENV_LAUNCHER__</code>
+              on MacOs
+            </li>
+            <li class="fragment">
+              Do not version track virtual environments - add
+              <code>.gitignore</code> May 20th
+              <img src="img/gitignore.png" />
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h3>The straw that almost broke the camel's back</h3>
-            <img src="img/camel.png"/>
-            <p><span style="font-weight: bold">Be nice</span> but have/use code of conducts when needed</p>
+          <h2>Breaking the world</h2>
+          <ul>
+            <li>since 2018 October - 41 successful releases</li>
+            <li class="fragment">
+              Friday evening release - typo in <code>setup.cfg</code>
+              <img src="img/typo.png" />
+              <img class="fragment" src="img/fixed.png" />
+            </li>
+            <li class="fragment">
+              Always be available in the next 1-2 hours post release
+            </li>
+          </ul>
         </section>
 
         <section>
-            <h2>Now, how popular is virtualenv?</h2>
-            <div class="plot">
-                <!--
+          <h1>Conclusion</h1>
+          <img
+            alt="Silky"
+            src="img/conclusion.jpg"
+            style="margin: 0; width: 720px;"
+          />
+        </section>
+        <section>
+          <h2>Lessons learned</h2>
+          <ul>
+            <li class="fragment">Have a well defined delivery plan</li>
+            <li class="fragment">Test a lot, automate via CIs</li>
+            <li class="fragment">
+              Prepare for a lot of bug fixes (on short turnaround - 27 releases
+              in 5 months)
+            </li>
+            <li class="fragment">Always be available post release</li>
+            <li class="fragment">
+              Be ready to periodically re-evaluate things from the ground up
+            </li>
+            <li class="fragment">
+              In general (but especially in opensource), be nice
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>The straw that almost broke the camel's back</h3>
+          <img src="img/camel.png" />
+          <p>
+            <span style="font-weight: bold;">Be nice</span> but have/use code of
+            conducts when needed
+          </p>
+        </section>
+
+        <section>
+          <h2>Now, how popular is virtualenv?</h2>
+          <div class="plot">
+            <!--
                 {"chart": {"zoomType": "x"}, "title": {"text": "downloads per month"}, "xAxis": {"type": "datetime"}, "yAxis": {"title": {"text": "Download count"}}, "legend": {"enabled": false}, "series": [{"type": "area", "name": "# download", "data": [[1548979200000.0, 4934303], [1551398400000.0, 7509407], [1554073200000.0, 6919955], [1556665200000.0, 9352763], [1559343600000.0, 9158337], [1561935600000.0, 9806761], [1564614000000.0, 10277689], [1567292400000.0, 9340311], [1569884400000.0, 9975747], [1572566400000.0, 9674725], [1575158400000.0, 9607922], [1577836800000.0, 10076246], [1580515200000.0, 11706251], [1583020800000.0, 12162000], [1585695600000.0, 11969278], [1588287600000.0, 11025645], [1590966000000.0, 10007357]]}]}
                 -->
-            </div>
+          </div>
         </section>
 
         <section>
-            <h1>🙇 ‍Thank you 🙇 <br/> and <br/> 🙋Questions🙋</h1>
+          <h1>
+            🙇 ‍Thank you 🙇 <br />
+            and <br />
+            🙋Questions🙋
+          </h1>
         </section>
-
-
+      </div>
     </div>
-</div>
 
-<div style="position:absolute; bottom: 2px; right: 2px; width: 8em">
-    <p style="color: #767676; font-family: Helvetica, sans-serif; font-weight: bold; font-size: 1.4em; margin: 0 2px 2px 0; text-align: center">
-        Bloomberg</p>
-    <p style="text-align: center; font-weight: bold; font-size: 0.1em; margin: 0 auto">
-        &copy; 2020 Bloomberg Finance L.P. <br/>All rights reserved.</p>
-</div>
+    <div style="position: absolute; bottom: 2px; right: 2px; width: 8em;">
+      <p
+        style="
+          color: #767676;
+          font-family: Helvetica, sans-serif;
+          font-weight: bold;
+          font-size: 1.4em;
+          margin: 0 2px 2px 0;
+          text-align: center;
+        "
+      >
+        Bloomberg
+      </p>
+      <p
+        style="
+          text-align: center;
+          font-weight: bold;
+          font-size: 0.1em;
+          margin: 0 auto;
+        "
+      >
+        &copy; 2020 Bloomberg Finance L.P. <br />All rights reserved.
+      </p>
+    </div>
 
-<script src="dist/reveal.js"></script>
-<script src="plugin/notes/notes.js"></script>
-<script src="plugin/highlight/highlight.js"></script>
-<script src="plugin/menu/menu.js"></script>
-<script src="plugin/zoom/zoom.js"></script>
-<script>
-    Reveal.initialize({
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script>
+      Reveal.initialize({
         width: 1280,
         height: 720,
         margin: 0.02,
@@ -1443,32 +1785,29 @@
         maxScale: 3.0,
         hash: true,
         dependencies: [
-            {src: 'plugin/highcharts.js'},
-            {src: 'plugin/anything/anything.js'},
-            {src: 'plugin/menu/menu.js'}
+          { src: "plugin/highcharts.js" },
+          { src: "plugin/anything/anything.js" },
+          { src: "plugin/menu/menu.js" },
         ],
         history: true,
         previewLinks: true,
-        navigationMode: 'linear',
-        transition: 'none',
+        navigationMode: "linear",
+        transition: "none",
         viewDistance: 10,
         mobileViewDistance: 6,
         controls: false,
         controlsTutorial: false,
         progress: false,
-        plugins: [
-            RevealHighlight,
-            RevealNotes,
-            RevealZoom
-        ],
-        anything: [{
+        plugins: [RevealHighlight, RevealNotes, RevealZoom],
+        anything: [
+          {
             className: "plot",
-            initialize: (function (container, options) {
-                Highcharts.chart(container, options);
-            })
-        }],
-    });
-</script>
-
-</body>
+            initialize: function (container, options) {
+              Highcharts.chart(container, options);
+            },
+          },
+        ],
+      });
+    </script>
+  </body>
 </html>
